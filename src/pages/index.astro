@@ -1,0 +1,123 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const sortedPosts = posts.sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime());
+const featuredPosts = sortedPosts.slice(0, 6);
+const remainingPosts = sortedPosts.slice(6, 40);
+---
+
+<Layout title="Paris Fenêtres — Menuiserie Urbaine, Fenêtres Isolantes Haussmanniennes & Isolation Acoustique">
+  <!-- Hero Section Vanta -->
+  <section class="relative border-b border-stone-800 bg-stone-950 py-16 sm:py-24 overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(245,158,11,0.08),transparent_50%)]"></div>
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6">
+      
+      <!-- Top Pill -->
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-950/30 px-3.5 py-1.5 text-xs text-amber-300">
+        <span class="h-2 w-2 rounded-full bg-amber-400"></span>
+        PATRIMOINE ARCHITECTURAL & CONFORT PHONIQUE
+      </div>
+
+      <!-- Headline -->
+      <h1 class="font-serif text-3xl font-extrabold tracking-tight text-stone-100 sm:text-5xl lg:text-6xl max-w-4xl leading-tight">
+        L'Art de la Fenêtre <span class="text-amber-400 italic font-serif">Haussmannienne</span> & du Silence Parisien.
+      </h1>
+
+      <p class="mt-6 max-w-2xl text-base sm:text-lg text-stone-300 leading-relaxed font-light">
+        Menuiseries bois sur mesure conformes ABF, double vitrage acoustique haute performance et rénovation énergétique des appartements de caractère à Paris.
+      </p>
+
+      <!-- Key Pillars -->
+      <div class="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:gap-6">
+        <div class="rounded-lg border border-stone-800 bg-stone-900/50 p-5">
+          <div class="text-[11px] text-amber-400 uppercase tracking-widest font-semibold">Conformité ABF</div>
+          <div class="mt-2 font-serif text-2xl font-bold text-stone-100">100% Validé</div>
+          <div class="mt-1 text-xs text-stone-400">Respect du patrimoine classé</div>
+        </div>
+        <div class="rounded-lg border border-stone-800 bg-stone-900/50 p-5">
+          <div class="text-[11px] text-amber-400 uppercase tracking-widest font-semibold">Atténuation Bruit</div>
+          <div class="mt-2 font-serif text-2xl font-bold text-stone-100">Jusqu'à -44 dB</div>
+          <div class="mt-1 text-xs text-stone-400">Double vitrage Silence</div>
+        </div>
+        <div class="rounded-lg border border-stone-800 bg-stone-900/50 p-5">
+          <div class="text-[11px] text-amber-400 uppercase tracking-widest font-semibold">Gain Thermique</div>
+          <div class="mt-2 font-serif text-2xl font-bold text-stone-100">Uw 1.2</div>
+          <div class="mt-1 text-xs text-stone-400">Amélioration du DPE</div>
+        </div>
+        <div class="rounded-lg border border-stone-800 bg-stone-900/50 p-5">
+          <div class="text-[11px] text-amber-400 uppercase tracking-widest font-semibold">Matériaux Nobles</div>
+          <div class="mt-2 font-serif text-2xl font-bold text-stone-100">Chêne de France</div>
+          <div class="mt-1 text-xs text-stone-400">Ferrage traditionnel à l'ancienne</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Bento Articles -->
+  <section class="py-16 sm:py-20 bg-stone-950 border-b border-stone-800">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+      <div class="flex items-center justify-between mb-10">
+        <div>
+          <span class="text-xs uppercase tracking-widest text-amber-400 font-semibold">Guides & Réalisations</span>
+          <h2 class="font-serif text-2xl font-bold text-stone-100 sm:text-3xl mt-1">Dossiers Techniques & Menuiserie</h2>
+        </div>
+        <a href="/blog/" class="hidden sm:inline-flex items-center gap-2 text-xs text-amber-400 hover:text-amber-300 font-medium">
+          DÉCOUVRIR LES 200 GUIDES →
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {featuredPosts.map((post) => (
+          <article class="group relative flex flex-col justify-between rounded-xl border border-stone-800 bg-stone-900/40 p-6 transition-all duration-300 hover:border-amber-500/40 hover:bg-stone-900/70">
+            <div>
+              <div class="flex items-center justify-between text-[11px] text-stone-400 mb-3">
+                <span class="rounded bg-stone-800 px-2 py-0.5 text-amber-400 font-medium">{post.data.category || 'Menuiserie'}</span>
+                <span>{new Date(post.data.pubDate).toLocaleDateString('fr-FR', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+              </div>
+              <h3 class="font-serif text-xl font-bold text-stone-100 group-hover:text-amber-400 transition-colors line-clamp-2 leading-snug">
+                <a href={'/blog/' + post.id + '/'}>
+                  {post.data.title}
+                </a>
+              </h3>
+              <p class="mt-3 text-xs text-stone-400 line-clamp-3 leading-relaxed">
+                {post.data.description}
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-stone-800/80 flex items-center justify-between text-xs">
+              <span class="text-stone-500">Paris Fenêtres Focus</span>
+              <a href={'/blog/' + post.id + '/'} class="text-amber-400 hover:underline flex items-center gap-1 font-medium">
+                Consulter le guide →
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Extended Catalog -->
+  <section class="py-16 bg-stone-900/20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+      <h2 class="font-serif text-2xl font-bold text-stone-100 mb-8">
+        Conseils Rénovation & Isolation
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {remainingPosts.map(post => (
+          <div class="flex items-start justify-between rounded-lg border border-stone-800/80 bg-stone-900/40 p-4 hover:border-stone-700 transition-colors">
+            <div class="pr-4">
+              <span class="text-[10px] text-amber-400 uppercase tracking-wider font-semibold">{post.data.category || 'Guide'}</span>
+              <h4 class="text-sm font-medium text-stone-200 mt-1 hover:text-amber-300 transition-colors">
+                <a href={'/blog/' + post.id + '/'}>{post.data.title}</a>
+              </h4>
+            </div>
+            <a href={'/blog/' + post.id + '/'} class="text-xs text-amber-400 whitespace-nowrap pt-1">
+              Lire →
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

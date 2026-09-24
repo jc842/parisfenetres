@@ -1,0 +1,138 @@
+---
+import { siteConfig } from '../config/site.config';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  lang?: string;
+}
+
+const {
+  title = siteConfig.title,
+  description = siteConfig.description,
+  image = '/images/og-image.jpg',
+  lang = 'fr',
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || siteConfig.url);
+const alternateFr = new URL(Astro.url.pathname.replace(/^\/(en|es)/, ''), siteConfig.url);
+const alternateEn = new URL('/en' + Astro.url.pathname.replace(/^\/(en|es)/, ''), siteConfig.url);
+const alternateEs = new URL('/es' + Astro.url.pathname.replace(/^\/(en|es)/, ''), siteConfig.url);
+---
+
+<!DOCTYPE html>
+<html lang={lang} class="scroll-smooth bg-stone-950 text-stone-100 antialiased selection:bg-amber-500 selection:text-stone-950">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <link rel="alternate" hreflang="fr" href={alternateFr} />
+    <link rel="alternate" hreflang="en" href={alternateEn} />
+    <link rel="alternate" hreflang="es" href={alternateEs} />
+    <link rel="alternate" hreflang="x-default" href={alternateFr} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={image} />
+
+    <!-- Google Fonts: Cormorant Garamond & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style is:global>
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+      .font-serif {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+      }
+    </style>
+  </head>
+  <body class="flex min-h-screen flex-col bg-stone-950 text-stone-200">
+    <!-- Header Vanta -->
+    <header class="sticky top-0 z-50 border-b border-stone-800/80 bg-stone-950/90 backdrop-blur-md">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
+        <a href="/" class="flex items-center gap-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-sm border border-amber-500/40 bg-stone-900 font-serif text-xl font-bold text-amber-400">
+            PF
+          </div>
+          <div>
+            <span class="block font-serif text-lg font-bold tracking-wide text-stone-100">PARIS FENÊTRES</span>
+            <span class="block text-[10px] tracking-widest text-amber-500 uppercase">Menuiserie & Acoustique</span>
+          </div>
+        </a>
+
+        <!-- Navigation Links -->
+        <nav class="hidden md:flex items-center gap-7 text-xs font-medium text-stone-300">
+          <a href="/blog/" class="hover:text-amber-400 transition-colors">FENÊTRES HAUSSMANNIENNES</a>
+          <a href="/blog/" class="hover:text-amber-400 transition-colors">ISOLATION ACOUSTIQUE</a>
+          <a href="/blog/" class="hover:text-amber-400 transition-colors">CONFORMITÉ ABF</a>
+          <a href="/mentions-legales/" class="hover:text-amber-400 transition-colors">L'ATELIER</a>
+        </nav>
+
+        <!-- Languages & Badges -->
+        <div class="flex items-center gap-3">
+          <div class="hidden sm:flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-950/30 px-3 py-1 text-[11px] text-amber-300">
+            <span class="h-1.5 w-1.5 rounded-full bg-amber-400"></span>
+            SAVOIR-FAIRE PARISIEN
+          </div>
+          <div class="flex items-center gap-1.5 text-xs text-stone-400 border-l border-stone-800 pl-3">
+            <a href="/" class="px-1.5 py-0.5 rounded text-stone-100 font-bold bg-stone-800">FR</a>
+            <a href="/en/" class="px-1.5 py-0.5 rounded hover:text-stone-100">EN</a>
+            <a href="/es/" class="px-1.5 py-0.5 rounded hover:text-stone-100">ES</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-grow">
+      <slot />
+    </main>
+
+    <!-- Footer Vanta -->
+    <footer class="border-t border-stone-800 bg-stone-900/60 py-12 text-stone-400 text-xs">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div class="md:col-span-2">
+            <div class="flex items-center gap-2 mb-3">
+              <div class="h-7 w-7 rounded-sm border border-amber-500/40 bg-stone-900 font-serif text-sm font-bold text-amber-400 flex items-center justify-center">PF</div>
+              <span class="font-serif text-base font-bold text-stone-200">PARIS FENÊTRES ÉDITION</span>
+            </div>
+            <p class="text-xs text-stone-400 leading-relaxed max-w-md">
+              La revue technique et patrimoniale de la menuiserie parisienne : double vitrage acoustique haute performance, conformité Architectes des Bâtiments de France (ABF) et valorisation architecturale haussmannienne.
+            </p>
+          </div>
+          <div>
+            <h4 class="text-stone-200 font-semibold mb-3 tracking-wider text-[11px] uppercase">Navigation</h4>
+            <ul class="space-y-2 text-stone-400">
+              <li><a href="/" class="hover:text-amber-400 transition-colors">Accueil</a></li>
+              <li><a href="/blog/" class="hover:text-amber-400 transition-colors">Guide & Articles</a></li>
+              <li><a href="/en/" class="hover:text-amber-400 transition-colors">English Edition</a></li>
+              <li><a href="/es/" class="hover:text-amber-400 transition-colors">Edición en Español</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-stone-200 font-semibold mb-3 tracking-wider text-[11px] uppercase">Légal & Éthique</h4>
+            <ul class="space-y-2 text-stone-400">
+              <li><a href="/mentions-legales/" class="hover:text-amber-400 transition-colors">Mentions Légales</a></li>
+              <li><a href="/politique-confidentialite/" class="hover:text-amber-400 transition-colors">Politique de Confidentialité</a></li>
+              <li><span class="text-stone-500">100% Cookieless RGPD</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="border-t border-stone-800/80 pt-6 flex flex-col sm:flex-row justify-between items-center text-[11px] text-stone-500">
+          <p>© {new Date().getFullYear()} Paris Fenêtres — Menuiserie haussmannienne & isolation phonique.</p>
+          <p class="mt-2 sm:mt-0 font-serif text-stone-400">LEXINGTON VANTA ARCHITECTURE</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
